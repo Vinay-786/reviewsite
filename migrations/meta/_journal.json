@@ -1,0 +1,20 @@
+{
+	"version": "7",
+	"dialect": "sqlite",
+	"entries": [
+		{
+			"idx": 0,
+			"version": "6",
+			"when": 1745788369417,
+			"tag": "0000_petite_captain_stacy",
+			"breakpoints": true
+		},
+		{
+			"idx": 1,
+			"version": "6",
+			"when": 1745835821838,
+			"tag": "0001_premium_prima",
+			"breakpoints": true
+		}
+	]
+}
