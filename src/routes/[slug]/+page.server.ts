@@ -1,54 +1,44 @@
-import { error, redirect } from '@sveltejs/kit';
+import { error, isRedirect, redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { useDrizzle } from '../../db/dbinit';
-import { users } from '../../db/schema';
+import { reviews, users } from '../../db/schema';
 import { eq } from 'drizzle-orm';
-import { jwtVerify } from 'jose';
-import { env } from '$env/dynamic/private';
-import { createSecretKey } from 'node:crypto';
+import { isLoggedin } from '$lib';
 
-export const load: PageServerLoad = async ({ params, platform, cookies }) => {
-	const token = cookies.get('jwt-token') ?? ''
-	if (!token) {
-		throw redirect(307, '/signin');
-	}
+export const load: PageServerLoad = async (event) => {
+	//{
+	//   id: 'ZDhmY2I0MTMtOWE1Yi00NzEwLTk2MzQtMWE2NDY3NzBkOWZi',
+	//   iat: 1746623866,
+	//   iss: 'cfsvelte',
+	//   aud: 'reviewer.vinrar.in',
+	//   exp: 1746624166
+	// }
 
-	const secretKey = createSecretKey(env.secretKey, 'utf-8')
 	try {
-		// verify token
-		const { payload } = await jwtVerify(token, secretKey, {
-			issuer: env.JWT_ISSUER, // issuer
-			audience: env.JWT_AUDIENCE, // audience
-		});
-
-		console.log(payload);
-		// log values to console
-		//{
-		//   id: 'ZDhmY2I0MTMtOWE1Yi00NzEwLTk2MzQtMWE2NDY3NzBkOWZi',
-		//   iat: 1746623866,
-		//   iss: 'cfsvelte',
-		//   aud: 'reviewer.vinrar.in',
-		//   exp: 1746624166
-		// }
-
-		const currentTime = Math.floor(Date.now() / 1000);
-		if (payload.exp && payload.exp < currentTime) {
-			throw redirect(307, "/signin")
-			// console.log("Token expired")
-		} else if (payload.exp && payload.exp > currentTime) {
-			const sqlite = useDrizzle(platform?.env.DB!);
-			const [user] = await sqlite
+		const res = await isLoggedin(event);
+		if (res.status === 200) {
+			const sqlite = useDrizzle(event);
+			const [user, userreviews] = await Promise.all([await sqlite
 				.select({ id: users.id, username: users.username })
 				.from(users)
-				.where(eq(users.username, params.slug));
+				.where(eq(users.username, event.params.slug)).then((res) => res[0]),
+
+			await sqlite.select().from(reviews).where(eq(reviews.reviewer, String(res.userId)))
+			])
 
 			if (user) {
-				return user;
+				return {
+					user: user,
+					reviews: userreviews
+				};
 			}
 		} else {
-			console.log("Token is invalid");
+			throw redirect(307, "signin")
 		}
 	} catch (e) {
+		if (isRedirect(e)) {
+			throw redirect(e.status, e.location)
+		}
 		//@ts-ignore
 		error(404, e.code); //ERR_JWT_EXPIRED
 	}

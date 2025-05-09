@@ -3,7 +3,7 @@ import { and, eq } from 'drizzle-orm';
 import { useDrizzle } from '../../db/dbinit';
 import { users } from '../../db/schema';
 import type { Actions } from './$types';
-import { generateToken, refreshToken } from '$lib/jwtutil';
+import { generateToken } from '$lib/jwtutil';
 import { isRedirect, redirect } from '@sveltejs/kit';
 
 export const actions = {
@@ -14,7 +14,7 @@ export const actions = {
 
     try {
       const passhash = await hashedpassword(passwd);
-      const sqlite = useDrizzle(event.platform?.env.DB!);
+      const sqlite = useDrizzle(event);
       const [loggeduser] = await sqlite
         .select({ id: users.id, user: users.username, email: users.email })
         .from(users)

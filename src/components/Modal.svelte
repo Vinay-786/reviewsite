@@ -25,6 +25,7 @@
 			onchange={(e) => {
 				e.preventDefault();
 				goto(`/search/${encodeURIComponent(e.currentTarget.value)}`);
+				e.currentTarget.value = ''
 				dialog!.close();
 			}}
 		/>

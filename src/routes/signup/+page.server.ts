@@ -15,7 +15,7 @@ export const actions = {
 
 		const passhash = await hashedpassword(passwd);
 		// console.log('email&user:', email, passwd, name.concat(encodedString));
-		const sqlite = useDrizzle(event.platform?.env.DB!);
+		const sqlite = useDrizzle(event);
 		const [registeruser] = await sqlite
 			.insert(users)
 			.values({ email: email, password: passhash, username: username })

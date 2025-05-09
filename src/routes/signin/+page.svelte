@@ -36,6 +36,7 @@
 		</div>
 		<button type="submit">Submit</button>
 	</div>
+	Don't have an account yet? <a href="/signup">Signup</a>
 </form>
 
 {#if form?.error}

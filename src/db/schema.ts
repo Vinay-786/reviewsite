@@ -1,5 +1,6 @@
 import { sqliteTable as table } from 'drizzle-orm/sqlite-core';
 import * as t from 'drizzle-orm/sqlite-core';
+import { type InferSelectModel } from 'drizzle-orm';
 
 export const users = table(
 	'users',
@@ -25,8 +26,11 @@ export const reviews = table(
 			.primaryKey()
 			.notNull()
 			.$defaultFn(() => crypto.randomUUID()),
-		reviewer: t.text().references(() => users.id),
-		content: t.text(),
-		likes: t.numeric()
+		reviewer: t.text().references(() => users.id, { onDelete: 'cascade' }).notNull(),
+		albumid: t.text().notNull(),
+		content: t.text().notNull(),
+		likes: t.int().notNull().default(0)
 	}
 )
+
+export type SelectReviews = InferSelectModel<typeof reviews>;

@@ -1,20 +1,34 @@
 {
-	"version": "7",
-	"dialect": "sqlite",
-	"entries": [
-		{
-			"idx": 0,
-			"version": "6",
-			"when": 1745788369417,
-			"tag": "0000_petite_captain_stacy",
-			"breakpoints": true
-		},
-		{
-			"idx": 1,
-			"version": "6",
-			"when": 1745835821838,
-			"tag": "0001_premium_prima",
-			"breakpoints": true
-		}
-	]
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1745788369417,
+      "tag": "0000_petite_captain_stacy",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1745835821838,
+      "tag": "0001_premium_prima",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1746792982423,
+      "tag": "0002_flaky_night_nurse",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1746794107734,
+      "tag": "0003_misty_vulture",
+      "breakpoints": true
+    }
+  ]
 }

@@ -6,7 +6,6 @@
 
 <nav>
 	<a href="/">Home</a>
-	<a href="/signup">Signup</a>
 	<!-- <a href="/itsvinay.inaXRzdmluYXkuaW4="> profile</a> -->
 	<a href="/signin"> SignIn</a>
 	<a href="#search" onclick={() => (showModal = true)} style="cursor: grab"> Search</a>
@@ -19,5 +18,5 @@
 		<h2>Search Album</h2>
 	{/snippet}
 
-	<div>whatever</div>
+	<div>search your album</div>
 </Modal>
