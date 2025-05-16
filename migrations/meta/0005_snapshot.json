@@ -1,8 +1,8 @@
 {
 	"version": "6",
 	"dialect": "sqlite",
-	"id": "74f4afdc-ebfb-4c2d-90b3-7170cd0d3b3e",
-	"prevId": "e67b301f-f883-441a-a234-f6d8b0a3b7ff",
+	"id": "43812075-dc51-456b-b2cd-8292ebdf4b7f",
+	"prevId": "c75979e7-7105-4521-a187-0d4984c987cd",
 	"tables": {
 		"reviews": {
 			"name": "reviews",
@@ -18,22 +18,45 @@
 					"name": "reviewer",
 					"type": "text",
 					"primaryKey": false,
-					"notNull": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"albumid": {
+					"name": "albumid",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"albumname": {
+					"name": "albumname",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
 					"autoincrement": false
 				},
 				"content": {
 					"name": "content",
 					"type": "text",
 					"primaryKey": false,
-					"notNull": false,
+					"notNull": true,
 					"autoincrement": false
 				},
 				"likes": {
 					"name": "likes",
-					"type": "numeric",
+					"type": "integer",
 					"primaryKey": false,
-					"notNull": false,
-					"autoincrement": false
+					"notNull": true,
+					"autoincrement": false,
+					"default": 0
+				},
+				"order_date": {
+					"name": "order_date",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false,
+					"default": "(unixepoch() * 1000)"
 				}
 			},
 			"indexes": {},
@@ -44,7 +67,55 @@
 					"tableTo": "users",
 					"columnsFrom": ["reviewer"],
 					"columnsTo": ["id"],
-					"onDelete": "no action",
+					"onDelete": "cascade",
+					"onUpdate": "no action"
+				}
+			},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {},
+			"checkConstraints": {}
+		},
+		"userinfo": {
+			"name": "userinfo",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "text",
+					"primaryKey": true,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"displayname": {
+					"name": "displayname",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				},
+				"topfour": {
+					"name": "topfour",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				},
+				"user": {
+					"name": "user",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				}
+			},
+			"indexes": {},
+			"foreignKeys": {
+				"userinfo_user_users_id_fk": {
+					"name": "userinfo_user_users_id_fk",
+					"tableFrom": "userinfo",
+					"tableTo": "users",
+					"columnsFrom": ["user"],
+					"columnsTo": ["id"],
+					"onDelete": "cascade",
 					"onUpdate": "no action"
 				}
 			},

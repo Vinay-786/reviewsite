@@ -9,58 +9,32 @@
 	};
 </script>
 
-<a class="album-link" href={`/album/${album.id}`}>
-	<div class="album-card">
-		<h3>ID: <span>{album.id}</span></h3>
-		<h3>Album Name: <span>{album.title}</span></h3>
-		<h3>Release Date: <span>{album['first-release-date'] || 'N/A'}</span></h3>
-		<h3>
+<a
+	class="block no-underline text-inherit hover:transform hover:-translate-y-0.5 transition-all duration-200 mx-2"
+	href={`/album/${album.id}`}
+>
+	<div
+		class="max-w-lg mx-auto mb-4 p-3 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200"
+	>
+		<h3 class="my-2 text-gray-700 dark:text-gray-300 font-normal">
+			Album Name: <span class="font-bold text-gray-900 dark:text-white">{album.title}</span>
+		</h3>
+		<h3 class="my-2 text-gray-700 dark:text-gray-300 font-normal">
+			Release Date: <span class="font-bold text-gray-900 dark:text-white"
+				>{album['first-release-date'] || 'N/A'}</span
+			>
+		</h3>
+		<h3 class="my-2 text-gray-700 dark:text-gray-300 font-normal">
 			Record Type:
-			<span>
+			<span class="font-bold text-gray-900 dark:text-white">
 				{album['primary-type']}
 				{album['secondary-types']?.length ? ` (${album['secondary-types'].join(', ')})` : ''}
 			</span>
 		</h3>
-		<h3>Artist: <span>{album['artist-credit'][0]?.name}</span></h3>
+		<h3 class="my-2 text-gray-700 dark:text-gray-300 font-normal">
+			Artist: <span class="font-bold text-gray-900 dark:text-white"
+				>{album['artist-credit'][0]?.name}</span
+			>
+		</h3>
 	</div>
 </a>
-
-<style>
-	.album-link {
-		text-decoration: none;
-		color: inherit;
-		display: block;
-	}
-
-	.album-card {
-		margin-left: auto;
-		margin-right: auto;
-		margin-bottom: 1rem;
-		padding: 1.5rem;
-		border: 1px solid #ccc;
-		border-radius: 8px;
-		background-color: #f9f9f9;
-		box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-		font-family: sans-serif;
-		max-width: 500px;
-		transition:
-			transform 0.2s,
-			box-shadow 0.2s;
-	}
-
-	.album-card:hover {
-		transform: translateY(-2px);
-		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-	}
-
-	h3 {
-		margin: 0.5rem 0;
-		color: #333;
-		font-weight: normal;
-	}
-
-	span {
-		font-weight: bold;
-		color: #111;
-	}
-</style>

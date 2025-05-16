@@ -1,29 +1,38 @@
-import { SignJWT } from "jose";
-import { env } from "$env/dynamic/private";
-import { createSecretKey } from "node:crypto";
+import { SignJWT } from 'jose';
+import { env } from '$env/dynamic/private';
 
-const secretKey = createSecretKey(env.secretKey, 'utf-8')
+const Encoder = new TextEncoder();
 
-export const generateToken = async (userid: string) => await new SignJWT({
-  id: userid
-}) // details to  encode in the token
-  .setProtectedHeader({
-    alg: 'HS256'
-  }) // algorithm
-  .setIssuedAt()
-  .setIssuer(env.JWT_ISSUER) // issuer
-  .setAudience(env.JWT_AUDIENCE) // audience
-  .setExpirationTime("15 minutes") // token expiration time, e.g., "1 day"
-  .sign(secretKey); // secretKey generated from previous step
+const secretKey = Encoder.encode(env.secretKey);
+const secretKeyRefresh = Encoder.encode(env.secretKeyRefresh);
 
-export const refreshToken = async (userid: string) => await new SignJWT({
-  id: userid
-}) // details to  encode in the token
-  .setProtectedHeader({
-    alg: 'HS256'
-  }) // algorithm
-  .setIssuedAt()
-  .setIssuer(env.JWT_ISSUER) // issuer
-  .setAudience(env.JWT_AUDIENCE) // audience
-  .setExpirationTime("7 days") // token expiration time, e.g., "1 day"
-  .sign(secretKey); // secretKey generated from previous step
+// console.log("secretKey ", secretKey)
+// console.log("secretkeyRe", secretKeyRefresh)
+
+export const generateToken = async (userid: string, username: string) =>
+	await new SignJWT({
+		id: userid,
+		user: username
+	})
+		.setProtectedHeader({
+			alg: 'HS256'
+		}) // algorithm
+		.setIssuedAt()
+		.setIssuer(env.JWT_ISSUER)
+		.setAudience(env.JWT_AUDIENCE)
+		.setExpirationTime('15 minutes')
+		.sign(secretKey);
+
+export const refreshToken = async (userid: string, username: string) =>
+	await new SignJWT({
+		id: userid,
+		user: username
+	})
+		.setProtectedHeader({
+			alg: 'HS256'
+		})
+		.setIssuedAt()
+		.setIssuer(env.JWT_ISSUER)
+		.setAudience(env.JWT_AUDIENCE)
+		.setExpirationTime('1 week')
+		.sign(secretKeyRefresh);

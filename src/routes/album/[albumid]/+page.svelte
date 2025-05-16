@@ -1,130 +1,65 @@
 <script lang="ts">
-	import { enhance } from "$app/forms";
-  import { invalidate } from '$app/navigation';
-  import { page } from "$app/state"
-  import { type SelectReviews } from "../../../db/schema";
+	import { type SelectReviews } from '../../../db/schema';
 
-  export let data: {
-    albumreviews:  SelectReviews[]
-    };
+	type AlbumReview = {
+		reviews: SelectReviews;
+		username: string;
+	};
+	export let data: {
+		albumreviews: AlbumReview[];
+	};
 </script>
 
-<h2>Album page</h2>
-<div>
-  <main>
-    <h3>Reviews</h3>
-    <div class="container">
-      <form method="POST" use:enhance={()=> {    		
-					return async({result}) => {
-						if (result.type === "success"){
-							await invalidate(`api:reviews:${page.params.albumid}`);
-							alert('Success')
-						}else {
-							alert('not logged in')
-						}
-					}
-      	}}
-      	class="review-form"
-      >
-      	<div style="flex: auto; flex-direction: row;">
-        <textarea name="review" id="review" rows="5" cols="50"></textarea>
-        <button type="submit">Submit</button>
-        <div>
-      </form>
-    </div>
-    <div class="reviews-container">
-  {#each data.albumreviews as $reviews}
-    <div class="review-card">
-      <p class="review-content">{$reviews.content}</p>
-      <p class="review-meta">
-        <span>👍 {$reviews.likes} Likes</span> • 
-        <span>👤 Reviewer: {$reviews.reviewer}</span>
-      </p>
-    </div>
-  {/each}
+<div class="space-y-4">
+	{#if data.albumreviews.length === 0}
+		<div class="text-center py-6 bg-gray-50 rounded-lg">
+			<p class="text-gray-500">No reviews yet. Be the first to write one!</p>
+		</div>
+	{:else}
+		{#each data.albumreviews as $reviews}
+			<div class="bg-gray-50 rounded-lg p-4 border border-gray-200 shadow-sm">
+				<p class="text-gray-800 mb-3 whitespace-pre-line">{$reviews.reviews.content}</p>
+
+				<div
+					class="flex flex-wrap gap-x-4 gap-y-2 text-sm text-gray-600 pt-2 border-t border-gray-200"
+				>
+					<span class="flex items-center">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							class="h-4 w-4 mr-1 text-blue-500"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"
+							/>
+						</svg>
+						{$reviews.reviews.likes} Likes
+					</span>
+
+					<span class="flex items-center">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							class="h-4 w-4 mr-1 text-gray-500"
+							fill="none"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+							/>
+						</svg>
+						{$reviews.username}
+					</span>
+				</div>
+			</div>
+		{/each}
+	{/if}
 </div>
-  </main>
-</div>
-
-<style>
-	 .review-form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    max-width: 500px;
-    margin: 0 auto;
-  }
-
-  .review-form textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    resize: vertical;
-    font-size: 14px;
-  }
-
-  .review-form button {
-    padding: 10px 15px;
-    background-color: #0278ff;
-    border: none;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-  }
-
-  .review-form button:hover {
-    background-color: #005fcc;
-  }
-
-	main {
-		flex: 2;
-		padding: 1.5rem;
-		background-color: #fff;
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-	}
-
-	h2,
-	h3 {
-		margin-top: 0;
-		color: #2c3e50;
-	}
-
-	p {
-		margin: 0.25rem 0;
-		color: #444;
-		font-size: 0.95rem;
-	}
-
-	 .reviews-container {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-top: 20px;
-  }
-
-  .review-card {
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #fafafa;
-  }
-
-  .review-content {
-    font-size: 15px;
-    margin-bottom: 10px;
-    color: #333;
-  }
-
-  .review-meta {
-    font-size: 13px;
-    color: #777;
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .review-meta span {
-    display: inline-block;
-  }
-</style>

@@ -42,13 +42,16 @@
 	},
 	"pnpm": {
 		"onlyBuiltDependencies": [
+			"@tailwindcss/oxide",
 			"esbuild",
 			"workerd"
 		]
 	},
 	"dependencies": {
+		"@tailwindcss/vite": "^4.1.6",
 		"drizzle-orm": "^0.43.1",
 		"drizzle-zod": "^0.7.1",
-		"jose": "^6.0.11"
+		"jose": "^6.0.11",
+		"tailwindcss": "^4.1.6"
 	}
 }
